@@ -27,7 +27,8 @@ names(Extra1) <- names(Extra1) %>%
   str_replace_all(., "Unhealthy_High", "NRN") %>%
   str_replace_all(., "dis", "Disease") 
 
-Extra2 <- fread(paste0(IncludeFigHere, "/AssocDiab.csv"))
+Extra2 <- fread(paste0(IncludeFigHere, "/AssocDiab.csv")) %>%
+  select(starts_with("dis"), Healthy_Low_cif:Unhealthy_High_ul)
 
 
 names(Extra2) <- names(Extra2) %>%
@@ -36,6 +37,9 @@ names(Extra2) <- names(Extra2) %>%
   str_replace_all(., "Unhealthy_Cross", "PBN") %>%
   str_replace_all(., "Unhealthy_High", "NRN") %>%
   str_replace_all(., "dis", "Disease") 
+
+
+
 
 #Variable and title
 
@@ -107,10 +111,13 @@ addDataFrame(Supp3, sheet, row.names = FALSE, col.names = TRUE)
 sheet <- createSheet(wb, "Supp Table 4 - Legend")
 addDataFrame(Supp4, sheet, row.names = FALSE, col.names = TRUE)
 
-sheet <- createSheet(wb, "Supp Table 5 - Summary Stats Significant")
+sheet <- createSheet(wb, "Supp Table 5 - Diabetes Association - Relative Risk")
+addDataFrame(Extra2, sheet, row.names = FALSE, col.names = TRUE)
+
+sheet <- createSheet(wb, "Supp Table 6 - Summary Stats Significant")
 addDataFrame(Supp5, sheet, row.names = FALSE, col.names = TRUE)
 
-sheet <- createSheet(wb, "Supp Table 6 - Longevity SNPs")
+sheet <- createSheet(wb, "Supp Table 7 - Longevity SNPs")
 addDataFrame(Supp6, sheet, row.names = FALSE, col.names = TRUE)
 
 
@@ -130,8 +137,8 @@ wb <- createWorkbook()
 sheet <- createSheet(wb, "Extra 1 - Relative Risk")
 addDataFrame(Extra1, sheet, row.names = FALSE, col.names = TRUE)
 
-sheet <- createSheet(wb, "Extra 2 - Diabetes Association - Relative Risk")
-addDataFrame(Extra2, sheet, row.names = FALSE, col.names = TRUE)
+#sheet <- createSheet(wb, "Extra 2 - Diabetes Association - Relative Risk")
+#addDataFrame(Extra2, sheet, row.names = FALSE, col.names = TRUE)
 
 sheet <- createSheet(wb, "Extra 3 - GWAS Catalog rsIDs")
 addDataFrame(Extra3, sheet, row.names = FALSE, col.names = TRUE)

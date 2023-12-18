@@ -647,7 +647,8 @@ fwrite(Window2, paste0(IncludeFigHere, "/Window2.csv"))
 
 # there are missing values if there has never been a record of a specific marker 
 PhenoAgeMergeDataWideFill <- MergeDataWideFill %>%
-  dplyr::mutate(funsPhen = -19.907 - 0.0336*Albumin + 0.0095*Creatinine + 0.1953*Glucose + 0.0954*log(`Plasma C-reactive protein level`) - 0.0120*`Percentage lymphocytes` + 0.0268*`Mean corpuscular volume (MCV)` + 0.3306*`Red blood cell dist width` +  0.00188*`Alkaline Phosphatase` + 0.0554*`White blood count` + 0.0804*age) %>%
+  dplyr::mutate(funsPhen = -19.907 - 0.0336*Albumin + 0.0095*Creatinine + 0.1953*Glucose + 0.0954*log(`Plasma C-reactive protein level`) - 0.0120*`Percentage lymphocytes` + 
+                  0.0268*`Mean corpuscular volume (MCV)` + 0.3306*`Red blood cell dist width` +  0.00188*`Alkaline Phosphatase` + 0.0554*`White blood count` + 0.0804*age) %>%
   dplyr::mutate(PhenoAge = 141.50 + (log((-0.00553)*(((-1.51714)*exp(funsPhen))/0.0076927)))/(0.09165)) %>%
   drop_na() %>% #length(unique(PhenoAgeMergeDataWideFill$eid))
   filter(`Plasma C-reactive protein level` != 0) %>% # added this log of 0 = Inf
@@ -1879,6 +1880,22 @@ save(Rank, file =  paste0(IncludeFigHere,"/Rank.RData"))
 #load(paste0(IncludeFigHere,"/RelativeRiskList2.RData"))
 #load(paste0(IncludeFigHere,"/RelativeRiskList2.RData"))
 
+
+
+#Edges and Vertices
+
+print(summary(readRDS(paste0(IncludeFigHere,"/RRnet2_Plot_2", "Healthy_Low",".RDS"))))
+print(summary(readRDS(paste0(IncludeFigHere,"/RRnet2_Plot_2", "Unhealthy_High",".RDS"))))
+print(summary(readRDS(paste0(IncludeFigHere,"/RRnet2_Plot_2", "Healthy_Cross",".RDS"))))
+print(summary(readRDS(paste0(IncludeFigHere,"/RRnet2_Plot_2", "Unhealthy_Cross",".RDS"))))
+
+#30 48 
+saveRDS(RRnet2, paste0(IncludeFigHere,"/RRnet2_Plot_2", i,".RDS"))
+saveRDS(RRnet2, paste0(IncludeFigHere,"/RRnet2_Plot_2", i,".RDS"))
+saveRDS(RRnet2, paste0(IncludeFigHere,"/RRnet2_Plot_2", i,".RDS"))
+
+
+
 TableFinal <- do.call(rbind, Table) %>%
   add_rownames() %>%
   mutate(rowname = gsub("\\..*","",rowname)) %>%
@@ -2039,6 +2056,8 @@ Rules <-  fread( paste0(IncludeFigHere, "/Rules.csv")) ##################
 Stats <- Rules %>%
   group_by(eid) %>%
   count() #%>%
+
+summary(Stats$n)
 #filter(n != 1) #115,912 with this butnot needed! In the end category does not mean multimorbid, we are interested in types of diseases more than anything else right? 
 
 pdf(paste0(IncludeFigHere, "/MultimorbidityHistogram.pdf"), 4, 3)
